@@ -38,6 +38,10 @@ class ClipboardManager:
         clear_button = ttk.Button(self.root, text="Clear History", command=self.clear_history)
         clear_button.pack(pady=5)
         
+        # Create de-case button
+        decase_button = ttk.Button(self.root, text="De-case It", command=self.decase_selected)
+        decase_button.pack(pady=5)
+        
     def monitor_clipboard(self):
         while True:
             current_clipboard = pyperclip.paste()
@@ -77,6 +81,17 @@ class ClipboardManager:
         self.clipboard_history.clear()
         self.update_listbox()
     
+    def decase_selected(self):
+        selection = self.history_listbox.curselection()
+        if selection:
+            index = selection[0]
+            # Replace '-' and '_' with spaces
+            modified_text = self.clipboard_history[index].replace('-', ' ').replace('_', ' ')
+            pyperclip.copy(modified_text)
+            # Optionally, you can update the listbox to show the modified text
+            self.clipboard_history[index] = modified_text
+            self.update_listbox()
+
     def run(self):
         self.root.mainloop()
 
